@@ -18,6 +18,8 @@ class WatchStatePlugin {
     apply(compiler) {
         let isWatchMode = false;
         let prevAssets = [];
+        console.log("WATHHHHH");
+        
         compiler.hooks.watchRun.tapAsync(id, function (compiler, callback) {
             callback();
             if (isWatchMode) {
@@ -38,13 +40,17 @@ class WatchStatePlugin {
             isWatchMode = true;
         });
         compiler.hooks.afterEmit.tapAsync(id, function (compilation, callback) {
+            //console.log("AFTER EMIT", compilation.assets);
+            
             callback();
+          
             __1.env.stats &&
                 console.log(isWatchMode ? messages.startWatching : messages.compilationComplete);
             const stats = compilation.getStats();
             if (stats.hasErrors()) {
                 __1.env.verbose && console.log(`[${id}] Warn: Compilation had errors!`);
             }
+        
             // logic taken from CleanWebpackPlugin
             // const assets =
             // 	stats.toJson(
@@ -56,15 +62,19 @@ class WatchStatePlugin {
             // const assetList = assets.map((asset) => asset.name);
             // const emittedAssets = Array.from(compilation.emittedAssets);
             const assetList = Object.keys(compilation.assets);
-            const emittedAssets = Array.from(compilation.emittedAssets);
+        
+            const emittedAssets = Array.from(compilation.getAssets().map(x => x.name));
+         
             if (!prevAssets.length && emittedAssets.length < assetList.length) {
                 emittedAssets.push(...assetList);
             }
+            
             const staleAssets = prevAssets.filter((asset) => {
                 return assetList.includes(asset) === false;
             });
             // store assets for next compilation
             prevAssets = assetList.sort();
+           
             notify({
                 type: 'compilation',
                 version,

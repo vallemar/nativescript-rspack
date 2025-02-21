@@ -16,6 +16,7 @@
     "@rspack/core": "^1.2.5",
     "@types/node": "~17.0.21",
     "tailwindcss": "^3.4.3",
+    "ts-checker-rspack-plugin": "^1.1.1",
     "typescript": "^5.7.3"
   }
 }

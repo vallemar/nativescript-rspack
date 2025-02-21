@@ -8,11 +8,12 @@ const ansi_colors_1 = require("ansi-colors");
 const commander_1 = require("commander");
 const ts_dedent_1 = __importDefault(require("ts-dedent"));
 const webpack_1 = __importDefault(require("webpack"));
+const rspack = __importDefault(require("@rspack/core"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const parseEnvFlags_1 = require("../cli/parseEnvFlags");
 const defaultConfig = path_1.default.resolve(__dirname, '../stubs/default.config.stub.js');
-const tag = `[${(0, ansi_colors_1.green)('@nativescript/webpack')}]`;
+const tag = `[${(0, ansi_colors_1.green)('../index')}]`;
 function error(message) {
     console.error(`${tag} ${(0, ansi_colors_1.redBright)((0, ts_dedent_1.default)(message))}`);
 }
@@ -74,7 +75,7 @@ commander_1.program
         process.exitCode = 1;
         return;
     }
-    const compiler = (0, webpack_1.default)(configuration);
+    const compiler = (0, rspack.default)(configuration);
     const webpackCompilationCallback = (err, stats) => {
         if (err) {
             // Do not keep cache anymore

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.info = exports.warnOnce = exports.warn = exports.error = void 0;
-const webpack_1 = require("@nativescript/webpack");
+const webpack_1 = require("../index");
 const ts_dedent_1 = __importDefault(require("ts-dedent"));
 // de-indents strings so multi-line string literals can be used
 function cleanup(data) {

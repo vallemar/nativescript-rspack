@@ -27,9 +27,12 @@ class PlatformSuffixPlugin {
     apply(compiler) {
         const platformRE = new RegExp(`\\.${this.extensions.join('|')}\\.`);
         // require.context
-        compiler.hooks.contextModuleFactory.tap(id, (cmf) => {
+         compiler.hooks.contextModuleFactory.tap(id, (cmf) => {
+            
             // @ts-ignore
-            cmf.hooks.alternativeRequests.tap(id, (modules, options) => {
+            cmf.hooks.beforeResolve.tap(id, (modules, options) => {
+             //   console.log("HEREEE beforeResolve", modules);
+
                 const additionalModules = [];
                 // we are looking for modules that are platform specific (something.<platform>.ext)
                 // and we are duplicating them without the platform suffix
@@ -43,23 +46,53 @@ class PlatformSuffixPlugin {
                 modules.push(...additionalModules);
             });
         });
-        compiler.resolverFactory.hooks.resolver
+       // console.log(compiler.hooks);
+        
+        compiler.hooks.normalModuleFactory.tap(id, (normalModuleFactory) => {
+          //  console.log("HEREEE normalModuleFactory", normalModuleFactory);
+
+            normalModuleFactory.hooks.resolve.tapAsync(id, (data, callback) => {
+              // Redirect the module
+          /*    console.log("id", id);
+             console.log("data", data);
+             console.log("callback", callback); */
+             callback();
+            /*  for (const platform of this.extensions) {
+                const { path, request } = request_;
+                const ext = request && (0, path_1.extname)(request);
+                const platformExt = ext ? `.${platform}${ext}` : '';
+                if (path && request && ext && !request.includes(platformExt)) {
+                    const platformRequest = request.replace(ext, platformExt);
+                    const extPath = (0, path_1.resolve)(path, platformRequest);
+                    // console.log({
+                    // 	path,
+                    // 	request,
+                    // 	ext,
+                    // 	extPath
+                    // })
+                    // if a file with the same + a platform suffix exists
+                    // we want to resolve that file instead
+                    if ((0, fs_1.existsSync)(extPath)) {
+                        const message = `resolving "${request}" to "${platformRequest}"`;
+                        const hook = resolver.ensureHook('normalResolve');
+                        console.log(message);
+                        // here we are creating a new resolve object and replacing the path
+                        // with the .<platform>.<ext> suffix
+                        const obj = Object.assign(Object.assign({}, request_), { path: resolver.join(path, platformRequest), relativePath: request_.relativePath &&
+                                resolver.join(request_.relativePath, platformRequest), request: undefined });
+                        // we call to the actual resolver to do the resolving of this new file
+                        return resolver.doResolve(hook, obj, message, resolveContext, callback);
+                    }
+                }
+            }
+            callback(); */
+            });
+          });
+
+     /*    compiler.resolverFactory.hooks.resolver
             .for('normal')
             .tap(id, (resolver) => {
-            // Object.keys(resolver.hooks).forEach(hook => {
-            // 	resolver.hooks[hook].tap(id, (request, resolveContext) => {
-            // 		if(
-            // 			request?.path?.includes('foo.xml') ||
-            // 			request?.request?.includes('foo.xml')
-            // 		) {
-            // 			console.log(
-            // 				`>>> ${hook}: ${request.path}`,
-            // 				// request
-            // 			)
-            // 		}
-            // 		// callback();
-            // 	});
-            // })
+    
             resolver.hooks.normalResolve.tapAsync(id, (request_, resolveContext, callback) => {
                 for (const platform of this.extensions) {
                     const { path, request } = request_;
@@ -123,7 +156,7 @@ class PlatformSuffixPlugin {
             // 			}
             // 		}
             // });
-        });
+        }); */
     }
 }
 exports.PlatformSuffixPlugin = PlatformSuffixPlugin;

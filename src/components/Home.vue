@@ -5,8 +5,8 @@ import {
   onMounted,
   onUnmounted,
   $navigateTo,
-} from 'nativescript-vue';
-import Details from './Details.vue';
+} from "nativescript-vue";
+import Details from "./Details.vue";
 
 const counter = ref(0);
 const message = computed(() => {
@@ -14,17 +14,17 @@ const message = computed(() => {
 });
 
 function logMessage() {
-  console.log('You have tapped the message!');
+  console.log("You have tapped the message!");
 }
 
 let interval: any;
 onMounted(() => {
-  console.log('mounted');
+  console.log("mounted");
   interval = setInterval(() => counter.value++, 100);
 });
 
 onUnmounted(() => {
-  console.log('unmounted');
+  console.log("unmounted");
   clearInterval(interval);
 });
 </script>
@@ -36,10 +36,10 @@ onUnmounted(() => {
         <Label text="Home" class="font-bold text-lg" />
       </ActionBar>
 
-      <GridLayout rows="*, auto, auto, *" class="px-4">
+      <GridLayout rows="*, auto, auto, *" class="px-4 bg-red-400">
         <Label
           row="1"
-          class="text-xl align-middle text-center text-gray-500"
+          class="text-xl align-middle text-center text-blue-500"
           :text="message"
           @tap="logMessage"
         />

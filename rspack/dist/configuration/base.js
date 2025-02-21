@@ -4,12 +4,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
-const webpack_1 = require("webpack");
 const semver_1 = require("semver");
 const fs_1 = require("fs");
-const fork_ts_checker_webpack_plugin_1 = __importDefault(require("fork-ts-checker-webpack-plugin"));
-const webpack_bundle_analyzer_1 = require("webpack-bundle-analyzer");
-const terser_webpack_plugin_1 = __importDefault(require("terser-webpack-plugin"));
+
+const fork_ts_checker_webpack_plugin_1 = require('ts-checker-rspack-plugin');
+//const fork_ts_checker_webpack_plugin_1 = __importDefault(require("fork-ts-checker-webpack-plugin"));
+
+//const webpack_bundle_analyzer_1 = require("webpack-bundle-analyzer");
+const {rspack} = require("@rspack/core");
+const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
+
+/* import { rspack } from '@rspack/core';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'; */
+
+
+//const terser_webpack_plugin_1 = __importDefault(require("terser-webpack-plugin"));
+
 const project_1 = require("../helpers/project");
 const dependencies_1 = require("../helpers/dependencies");
 const PlatformSuffixPlugin_1 = require("../plugins/PlatformSuffixPlugin");
@@ -116,9 +126,9 @@ function default_1(config, env = index_1.env) {
         });
     });
     // Set up Terser options
-    config.optimization.minimizer('TerserPlugin').use(terser_webpack_plugin_1.default, [
+    config.optimization.minimizer('TerserPlugin').use(rspack.SwcJsMinimizerRspackPlugin, [
         {
-            terserOptions: {
+            minimizerOptions: {
                 // @ts-ignore - https://github.com/webpack-contrib/terser-webpack-plugin/pull/463 broke the types?
                 compress: {
                     collapse_vars: platform !== 'android',
@@ -248,7 +258,7 @@ function default_1(config, env = index_1.env) {
     config.when((0, dependencies_1.hasDependency)('typescript'), (config) => {
         config
             .plugin('ForkTsCheckerWebpackPlugin')
-            .use(fork_ts_checker_webpack_plugin_1.default, [
+            .use(fork_ts_checker_webpack_plugin_1.TsCheckerRspackPlugin, [
             {
                 async: !!env.watch,
                 typescript: Object.assign({ memoryLimit: 4096 }, configFile),
@@ -353,19 +363,19 @@ function default_1(config, env = index_1.env) {
     ]);
     // Makes sure that require.context will never include
     // App_Resources, regardless where they are located.
-    config
+  /*   config
         .plugin('ContextExclusionPlugin|App_Resources')
-        .use(webpack_1.ContextExclusionPlugin, [new RegExp(`(.*)App_Resources(.*)`)]);
+        .use(webpack_1.ContextExclusionPlugin, [new RegExp(`(.*)App_Resources(.*)`)]); */
     // Makes sure that require.context will never include code from
     // another platform (ie .android.ts when building for ios)
     const otherPlatformsRE = (0, platform_1.getAvailablePlatforms)()
         .filter((platform) => platform !== (0, platform_1.getPlatformName)())
         .join('|');
-    config
+   /*  config
         .plugin('ContextExclusionPlugin|Other_Platforms')
-        .use(webpack_1.ContextExclusionPlugin, [
+        .use(rspack.Cont, [
         new RegExp(`\\.(${otherPlatformsRE})\\.(\\w+)$`),
-    ]);
+    ]); */
     // Filter common undesirable warnings
     config.set('ignoreWarnings', ((_d = config.get('ignoreWarnings')) !== null && _d !== void 0 ? _d : []).concat([
         /**
@@ -379,7 +389,7 @@ function default_1(config, env = index_1.env) {
         /System.import\(\) is deprecated/,
     ]));
     // todo: refine defaults
-    config.plugin('DefinePlugin').use(webpack_1.DefinePlugin, [
+    config.plugin('DefinePlugin').use(rspack.DefinePlugin, [
         {
             __DEV__: mode === 'development',
             __NS_WEBPACK__: true,
@@ -411,10 +421,10 @@ function default_1(config, env = index_1.env) {
     (0, copyRules_1.applyCopyRules)(config);
     config.plugin('WatchStatePlugin').use(WatchStatePlugin_1.WatchStatePlugin);
     config.when(env.hmr, (config) => {
-        config.plugin('HotModuleReplacementPlugin').use(webpack_1.HotModuleReplacementPlugin);
+        config.plugin('HotModuleReplacementPlugin').use(rspack.HotModuleReplacementPlugin);
     });
     config.when(env.report, (config) => {
-        config.plugin('BundleAnalyzerPlugin').use(webpack_bundle_analyzer_1.BundleAnalyzerPlugin, [
+        config.plugin('BundleAnalyzerPlugin').use(BundleAnalyzerPlugin, [
             {
                 analyzerMode: 'static',
                 generateStatsFile: true,
