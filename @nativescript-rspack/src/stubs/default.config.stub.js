@@ -1,4 +1,4 @@
-const webpack = require("@nativescript/webpack");
+const webpack = require("../index");
 
 module.exports = (env) => {
 	webpack.init(env);

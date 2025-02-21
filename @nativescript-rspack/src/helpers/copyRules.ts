@@ -1,9 +1,8 @@
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import Config from 'webpack-chain';
+import { CopyRspackPlugin } from '@rspack/core';
 import { basename } from 'path';
-
-import { getEntryDirPath } from './platform';
+import Config from 'webpack-chain';
 import { env } from '..';
+import { getEntryDirPath } from './platform';
 
 /**
  * @internal
@@ -66,7 +65,7 @@ export function applyCopyRules(config: Config) {
 		globOptions.ignore.push(`**/${appResourcesFolderName}/**`);
 	}
 
-	config.plugin('CopyWebpackPlugin').use(CopyWebpackPlugin, [
+	config.plugin('CopyWebpackPlugin').use(CopyRspackPlugin, [
 		{
 			patterns: Array.from(copyRules)
 				// reverted: removes valid rules occasionally (ie fonts)

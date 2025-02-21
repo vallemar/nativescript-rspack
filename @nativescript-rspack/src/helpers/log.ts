@@ -1,5 +1,5 @@
-import { env } from '@nativescript/webpack';
 import dedent from 'ts-dedent';
+import { env } from './../index';
 
 // de-indents strings so multi-line string literals can be used
 function cleanup(data: any[]) {
@@ -12,20 +12,20 @@ function cleanup(data: any[]) {
 }
 
 export function error(...data: any): Error {
-	console.warn(`[@nativescript/webpack] Error: \n`, ...cleanup(data));
+	console.warn(`[@nativescript/rspack] Error: \n`, ...cleanup(data));
 
 	// we return the error - the caller can throw or ignore
 	if (typeof data[0] === 'string') {
 		return new Error(
-			'\n\n[@nativescript/webpack]\n---\n\n' + dedent(data[0]) + '\n\n---\n',
+			'\n\n[@nativescript/rspack]\n---\n\n' + dedent(data[0]) + '\n\n---\n'
 		);
 	}
 
-	return new Error('@nativescript/webpack ran into a problem...');
+	return new Error('@nativescript/rspack ran into a problem...');
 }
 
 export function warn(...data: any): void {
-	console.warn(`[@nativescript/webpack] Warn: \n`, ...cleanup(data));
+	console.warn(`[@nativescript/rspack] Warn: \n`, ...cleanup(data));
 }
 
 const warnedMap: any = {};
@@ -40,7 +40,7 @@ export function warnOnce(key: string, ...data: any): void {
 
 export function info(...data: any): void {
 	if (env.verbose) {
-		console.log(`[@nativescript/webpack] Info: \n`, ...cleanup(data));
+		console.log(`[@nativescript/rspack] Info: \n`, ...cleanup(data));
 	}
 }
 

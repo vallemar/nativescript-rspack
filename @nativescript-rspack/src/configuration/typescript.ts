@@ -1,11 +1,10 @@
 import Config from 'webpack-chain';
 
-import { getEntryDirPath, getEntryPath } from '../helpers/platform';
-import { chainedSetAddAfter } from '../helpers/chain';
-import { env as _env, IWebpackEnv } from '../index';
-import { ContextExclusionPlugin } from 'webpack';
-import base from './base';
 import path from 'path';
+import { chainedSetAddAfter } from '../helpers/chain';
+import { getEntryDirPath, getEntryPath } from '../helpers/platform';
+import { env as _env, IWebpackEnv } from '../index';
+import base from './base';
 
 export default function (config: Config, env: IWebpackEnv = _env): Config {
 	base(config, env);
@@ -16,9 +15,9 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 	);
 
 	// exclude files starting with _ from require.context
-	config
+	/* 	config
 		.plugin(`ContextExclusionPlugin|exclude_files`)
-		.use(ContextExclusionPlugin, [/\b_.+\./]);
+		.use(ContextExclusionPlugin, [/\b_.+\./]); */
 
 	chainedSetAddAfter(
 		config.entry('bundle'),

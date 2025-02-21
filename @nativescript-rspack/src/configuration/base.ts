@@ -1,34 +1,34 @@
 import { extname, relative, resolve } from 'path';
+
 import {
-	ContextExclusionPlugin,
 	DefinePlugin,
 	HotModuleReplacementPlugin,
-} from 'webpack';
-import Config from 'webpack-chain';
-import { satisfies } from 'semver';
+	SwcJsMinimizerRspackPlugin,
+} from '@rspack/core';
+
 import { existsSync } from 'fs';
+import { satisfies } from 'semver';
+import Config from 'webpack-chain';
 
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import TerserPlugin from 'terser-webpack-plugin';
 
-import { getProjectFilePath, getProjectTSConfigPath } from '../helpers/project';
-import { getDependencyVersion, hasDependency } from '../helpers/dependencies';
-import { PlatformSuffixPlugin } from '../plugins/PlatformSuffixPlugin';
-import { applyFileReplacements } from '../helpers/fileReplacements';
-import { addCopyRule, applyCopyRules } from '../helpers/copyRules';
-import { WatchStatePlugin } from '../plugins/WatchStatePlugin';
-import { applyDotEnvPlugin } from '../helpers/dotEnv';
-import { env as _env, IWebpackEnv } from '../index';
 import { getValue } from '../helpers/config';
+import { addCopyRule, applyCopyRules } from '../helpers/copyRules';
+import { getDependencyVersion, hasDependency } from '../helpers/dependencies';
+import { applyDotEnvPlugin } from '../helpers/dotEnv';
+import { applyFileReplacements } from '../helpers/fileReplacements';
 import { getIPS } from '../helpers/host';
 import {
-	getAvailablePlatforms,
 	getAbsoluteDistPath,
-	getPlatformName,
 	getEntryDirPath,
 	getEntryPath,
+	getPlatformName,
 } from '../helpers/platform';
+import { getProjectFilePath, getProjectTSConfigPath } from '../helpers/project';
+import { env as _env, IWebpackEnv } from '../index';
+import { PlatformSuffixPlugin } from '../plugins/PlatformSuffixPlugin';
+import { WatchStatePlugin } from '../plugins/WatchStatePlugin';
 
 export default function (config: Config, env: IWebpackEnv = _env): Config {
 	const entryPath = getEntryPath();
@@ -87,7 +87,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		const sourceMapAbsolutePath = getProjectFilePath(
 			`./${
 				env.buildPath ?? 'platforms'
-			}/${platform}-sourceMaps/[file].map[query]`,
+			}/${platform}-sourceMaps/[file].map[query]`
 		);
 		const sourceMapRelativePath = relative(outputPath, sourceMapAbsolutePath);
 		config.output.sourceMapFilename(sourceMapRelativePath);
@@ -151,27 +151,31 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 	});
 
 	// Set up Terser options
-	config.optimization.minimizer('TerserPlugin').use(TerserPlugin, [
-		{
-			terserOptions: {
-				// @ts-ignore - https://github.com/webpack-contrib/terser-webpack-plugin/pull/463 broke the types?
-				compress: {
-					collapse_vars: platform !== 'android',
-					sequences: platform !== 'android',
-					keep_infinity: true,
-					drop_console: mode === 'production',
-					global_defs: {
-						__UGLIFIED__: true,
+	config.optimization
+		.minimizer('TerserPlugin')
+		.use(SwcJsMinimizerRspackPlugin, [
+			{
+				minimizerOptions: {
+					// @ts-ignore - https://github.com/webpack-contrib/terser-webpack-plugin/pull/463 broke the types?
+					compress: {
+						collapse_vars: platform !== 'android',
+						sequences: platform !== 'android',
+						keep_infinity: true,
+						drop_console: mode === 'production',
+						global_defs: {
+							__UGLIFIED__: true,
+						},
+					},
+					mangle: {
+						keep_fnames: true,
+						keep_classnames: true,
+						props: {
+							keep_quoted: true,
+						},
 					},
 				},
-				keep_fnames: true,
-				keep_classnames: true,
-				format: {
-					keep_quoted_props: true,
-				},
 			},
-		},
-	]);
+		]);
 
 	config.optimization.runtimeChunk('single');
 
@@ -277,7 +281,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 	const configFile = tsConfigPath
 		? {
 				configFile: tsConfigPath,
-			}
+		  }
 		: undefined;
 
 	// set up ts support
@@ -305,17 +309,16 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 
 	// Use Fork TS Checker to do type checking in a separate non-blocking process
 	config.when(hasDependency('typescript'), (config) => {
-		config
-			.plugin('ForkTsCheckerWebpackPlugin')
-			.use(ForkTsCheckerWebpackPlugin, [
-				{
-					async: !!env.watch,
-					typescript: {
-						memoryLimit: 4096,
-						...configFile,
-					},
+		//  TODO: CHECK IF THIS WORKS
+		config.plugin('ForkTsCheckerWebpackPlugin').use(TsCheckerRspackPlugin, [
+			{
+				async: !!env.watch,
+				typescript: {
+					memoryLimit: 4096,
+					...configFile,
 				},
-			]);
+			},
+		]);
 	});
 
 	// set up js
@@ -427,7 +430,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 
 	// Makes sure that require.context will never include
 	// App_Resources, regardless where they are located.
-	config
+	/* 	config
 		.plugin('ContextExclusionPlugin|App_Resources')
 		.use(ContextExclusionPlugin, [new RegExp(`(.*)App_Resources(.*)`)]);
 
@@ -441,7 +444,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		.plugin('ContextExclusionPlugin|Other_Platforms')
 		.use(ContextExclusionPlugin, [
 			new RegExp(`\\.(${otherPlatformsRE})\\.(\\w+)$`),
-		]);
+		]); */
 
 	// Filter common undesirable warnings
 	config.set(
@@ -456,7 +459,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 			 * +-----------------------------------------------------------------------------------------+
 			 */
 			/System.import\(\) is deprecated/,
-		]),
+		])
 	);
 
 	// todo: refine defaults

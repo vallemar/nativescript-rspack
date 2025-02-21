@@ -1,3 +1,4 @@
+import { Compiler } from '@rspack/core';
 import { env } from '../';
 
 const id = 'WatchStatePlugin';
@@ -14,7 +15,7 @@ export enum messages {
  * and send status updates through IPC to the {N} CLI.
  */
 export class WatchStatePlugin {
-	apply(compiler: any) {
+	apply(compiler: Compiler) {
 		let isWatchMode = false;
 		let prevAssets = [];
 
@@ -67,7 +68,9 @@ export class WatchStatePlugin {
 			// const emittedAssets = Array.from(compilation.emittedAssets);
 
 			const assetList = Object.keys(compilation.assets);
-			const emittedAssets = Array.from(compilation.emittedAssets);
+			const emittedAssets = Array.from(
+				compilation.getAssets().map((asset) => asset.name)
+			);
 
 			if (!prevAssets.length && emittedAssets.length < assetList.length) {
 				emittedAssets.push(...assetList);
