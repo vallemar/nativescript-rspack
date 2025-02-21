@@ -10,7 +10,7 @@
     "importHelpers": true,
     "baseUrl": ".",
     "paths": {
-      "@nativescript/webpack": ["rspack/dist/index"],
+      "@nativescript/webpack": ["@nativescript-rspack/dist/index"],
       "~/*": ["src/*"],
       "@/*": ["src/*"]
     },

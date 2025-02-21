@@ -4,7 +4,7 @@ const { resolve } = require('path')
 const useRsPack = true;
 
 if(useRsPack) {
-	webpack = require("./rspack/dist/index");
+	webpack = require("./@nativescript-rspack/dist/index");
 }
 else {
 	webpack = require("@nativescript/webpack");
@@ -18,7 +18,7 @@ module.exports = (env) => {
 	
 			config.resolve.alias.set(
 				'@nativescript/webpack',
-				resolve(__dirname, './rspack/dist/index')
+				resolve(__dirname, './@nativescript-rspack/dist/index')
 			)
 		}
     })
