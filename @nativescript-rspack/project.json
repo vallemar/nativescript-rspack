@@ -1,0 +1,22 @@
+{
+	"name": "webpack5",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "packages/webpack5",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"lint": {
+			"executor": "@nx/eslint:lint",
+			"options": {
+				"lintFilePatterns": []
+			}
+		},
+		"build": {
+			"executor": "nx:run-commands",
+			"outputs": ["{workspaceRoot}/@nativescript-rspack/dist"],
+			"options": {
+				"command": "npx zx ./tools/scripts/pack-webpack5.mjs"
+			}
+		}
+	}
+}
