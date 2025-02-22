@@ -33,3 +33,8 @@ webpack/lib
 /your_project_path/@nativescript-rspack/node_modules/@angular-devkit/build-angular/node_modules/webpack/lib/rules/RuleSetCompiler
 
 ```
+
+## RUN!!!
+`ns run android`
+
+enjoy!
