@@ -284,8 +284,32 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		  }
 		: undefined;
 
-	// set up ts support
 	config.module
+		.rule('ts')
+		.test(/\.(ts|tsx)$/)
+		.exclude.add(/node_modules/)
+		.end()
+		.use('builtin:swc-loader')
+		.loader('builtin:swc-loader')
+		.options({
+			...configFile,
+			sourceMap: true,
+			jsc: {
+				parser: {
+					syntax: 'typescript',
+					tsx: true,
+				},
+				transform: {
+					react: {
+						runtime: 'automatic',
+						development: true,
+						refresh: true,
+					},
+				},
+			},
+		});
+	// set up ts support
+	/* config.module
 		.rule('ts')
 		.test([/\.ts$/])
 		.use('ts-loader')
@@ -305,7 +329,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 					before: [require('../transformers/NativeClass').default],
 				};
 			},
-		});
+		}); */
 
 	// Use Fork TS Checker to do type checking in a separate non-blocking process
 	config.when(hasDependency('typescript'), (config) => {
@@ -314,6 +338,9 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 			{
 				async: !!env.watch,
 				typescript: {
+					configOverwrite: {
+						exclude: ['**/*.vue'],
+					},
 					memoryLimit: 4096,
 					...configFile,
 				},

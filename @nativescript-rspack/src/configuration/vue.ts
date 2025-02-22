@@ -1,12 +1,10 @@
-import { VueLoaderPlugin } from 'vue-loader';
-import { merge } from 'webpack-merge';
-import Config from 'webpack-chain';
 import fs from 'fs';
+import { VueLoaderPlugin } from 'vue-loader';
+import Config from 'webpack-chain';
 
-import { hasDependency } from '../helpers/dependencies';
+import { error } from '../helpers/log';
 import { getPlatformName } from '../helpers/platform';
 import { env as _env, IWebpackEnv } from '../index';
-import { error } from '../helpers/log';
 import base from './base';
 
 export default function (config: Config, env: IWebpackEnv = _env): Config {
@@ -32,7 +30,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		.tap((options) => {
 			return {
 				...options,
-				compiler: getTemplateCompiler(),
+				//compiler: getTemplateCompiler(),
 			};
 		});
 
@@ -52,7 +50,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		.loader('vue-loader/lib/loaders/stylePostLoader.js');
 
 	// set up ts support in vue files
-	config.module
+	/* config.module
 		.rule('ts')
 		.use('ts-loader')
 		.loader('ts-loader')
@@ -60,9 +58,9 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 			return merge(options, {
 				appendTsSuffixTo: ['\\.vue$'],
 			});
-		});
+		}); */
 
-	config.when(hasDependency('typescript'), (config) => {
+	/* 	config.when(hasDependency('typescript'), (config) => {
 		config.plugin('ForkTsCheckerWebpackPlugin').tap((args) => {
 			args[0] = merge(args[0], {
 				typescript: {
@@ -76,7 +74,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 			});
 			return args;
 		});
-	});
+	}); */
 
 	// add VueLoaderPlugin as the first plugin
 	config

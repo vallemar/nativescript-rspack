@@ -36,7 +36,7 @@ onUnmounted(() => {
         <Label text="Home" class="font-bold text-lg" />
       </ActionBar>
 
-      <GridLayout rows="*, auto, auto, *" class="px-4 bg-red-400">
+      <GridLayout rows="*, auto, auto, *" class="px-4 bg-yellow-400">
         <Label
           row="1"
           class="text-xl align-middle text-center text-blue-500"

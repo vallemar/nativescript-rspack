@@ -17,7 +17,7 @@ const items = ref(
         class="text-center px-4 py-10 text-2xl text-gray-900 font-bold"
       />
 
-      <ContentView row="1" class="bg-[#6ac713] rounded-t-3xl">
+      <ContentView row="1" class="bg-red-900 rounded-t-3xl">
         <ListView
           :items="items"
           separatorColor="transparent"
