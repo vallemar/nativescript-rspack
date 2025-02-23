@@ -12,6 +12,7 @@ import { satisfies } from 'semver';
 import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
+import Config from 'rspack-chain';
 import { getValue } from '../helpers/config';
 import { addCopyRule, applyCopyRules } from '../helpers/copyRules';
 import { getDependencyVersion, hasDependency } from '../helpers/dependencies';
