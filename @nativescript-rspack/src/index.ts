@@ -8,9 +8,9 @@ import stage3 from 'acorn-stage3';
 const acorn = require('acorn');
 acorn.Parser = acorn.Parser.extend(stage3);
 
+import { Configuration } from '@rspack/core';
 import { highlight } from 'cli-highlight';
-import webpack from 'webpack';
-import Config from 'webpack-chain';
+import Config from 'rspack-chain';
 import { merge } from 'webpack-merge';
 import { configs } from './configuration';
 import helpers from './helpers';
@@ -136,7 +136,7 @@ export function useConfig(config: keyof typeof defaultConfigs | false) {
 }
 
 /**
- * Add a new function to be called when building the internal config using webpack-chain.
+ * Add a new function to be called when building the internal config using rspack-chain.
  *
  * @param chainFn A function that accepts the internal chain config, and the current environment
  * @param options Optional options to control the order in which the chain function should be applied.
@@ -159,8 +159,8 @@ export function chainWebpack(
  */
 export function mergeWebpack(
 	mergeFn:
-		| ((config: Partial<webpack.Configuration>, env: IWebpackEnv) => any)
-		| Partial<webpack.Configuration>
+		| ((config: Partial<Configuration>, env: IWebpackEnv) => any)
+		| Partial<Configuration>
 ) {
 	webpackMerges.push(mergeFn);
 }
@@ -217,12 +217,12 @@ export function resolveChainableConfig(): Config {
  */
 export function resolveConfig(
 	chainableConfig = resolveChainableConfig()
-): webpack.Configuration {
+): Configuration {
 	if (!hasInitialized) {
 		throw error('resolveConfig() must be called after init()');
 	}
 
-	let config = chainableConfig.toConfig();
+	let config = chainableConfig.toConfig() as Configuration;
 
 	// this applies webpack merges
 	webpackMerges.forEach((mergeFn) => {

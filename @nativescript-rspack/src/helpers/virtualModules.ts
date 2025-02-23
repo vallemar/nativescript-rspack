@@ -1,8 +1,8 @@
 import { mkdirSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
+import Config from 'rspack-chain';
 import { RspackVirtualModulePlugin } from 'rspack-plugin-virtual-module';
 import dedent from 'ts-dedent';
-import Config from 'webpack-chain';
 
 import { getEntryDirPath } from './platform';
 import { getProjectFilePath } from './project';

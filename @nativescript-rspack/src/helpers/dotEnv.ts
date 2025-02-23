@@ -1,7 +1,7 @@
 import DotEnvPlugin from 'dotenv-webpack';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
-import Config from 'webpack-chain';
+import Config from 'rspack-chain';
 
 import { env } from '..';
 import { getProjectRootPath } from './project';

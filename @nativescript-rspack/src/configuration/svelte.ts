@@ -1,10 +1,10 @@
-import Config from 'webpack-chain';
+import Config from 'rspack-chain';
 
-import { getProjectFilePath } from '../helpers/project';
 import { hasDependency } from '../helpers/dependencies';
-import { getPlatformName } from '../helpers/platform';
-import { env as _env, IWebpackEnv } from '../index';
 import { error } from '../helpers/log';
+import { getPlatformName } from '../helpers/platform';
+import { getProjectFilePath } from '../helpers/project';
+import { env as _env, IWebpackEnv } from '../index';
 import base from './base';
 
 export default function (config: Config, env: IWebpackEnv = _env): Config {

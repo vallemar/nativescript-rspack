@@ -1,6 +1,6 @@
 import fs from 'fs';
+import Config from 'rspack-chain';
 import { VueLoaderPlugin } from 'vue-loader';
-import Config from 'webpack-chain';
 
 import { error } from '../helpers/log';
 import { getPlatformName } from '../helpers/platform';

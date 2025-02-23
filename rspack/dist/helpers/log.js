@@ -16,16 +16,16 @@ function cleanup(data) {
     });
 }
 function error(...data) {
-    console.warn(`[@nativescript/webpack] Error: \n`, ...cleanup(data));
+    console.warn(`[@nativescript/rspack] Error: \n`, ...cleanup(data));
     // we return the error - the caller can throw or ignore
     if (typeof data[0] === 'string') {
-        return new Error('\n\n[@nativescript/webpack]\n---\n\n' + (0, ts_dedent_1.default)(data[0]) + '\n\n---\n');
+        return new Error('\n\n[@nativescript/rspack]\n---\n\n' + (0, ts_dedent_1.default)(data[0]) + '\n\n---\n');
     }
-    return new Error('@nativescript/webpack ran into a problem...');
+    return new Error('@nativescript/rspack ran into a problem...');
 }
 exports.error = error;
 function warn(...data) {
-    console.warn(`[@nativescript/webpack] Warn: \n`, ...cleanup(data));
+    console.warn(`[@nativescript/rspack] Warn: \n`, ...cleanup(data));
 }
 exports.warn = warn;
 const warnedMap = {};
@@ -39,7 +39,7 @@ function warnOnce(key, ...data) {
 exports.warnOnce = warnOnce;
 function info(...data) {
     if (webpack_1.env.verbose) {
-        console.log(`[@nativescript/webpack] Info: \n`, ...cleanup(data));
+        console.log(`[@nativescript/rspack] Info: \n`, ...cleanup(data));
     }
 }
 exports.info = info;

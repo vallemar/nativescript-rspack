@@ -142,15 +142,15 @@ program
 		};
 
 		if (options.watch) {
-			env.stats && console.log('webpack is watching the files...');
+			env.stats && console.log('rspack is watching the files...');
 			compiler.watch(
 				configuration.watchOptions ?? {},
 				webpackCompilationCallback
 			);
 		} else {
-			compiler.run((err, status) => {
+			compiler.run((err, stats) => {
 				compiler.close((err2) =>
-					webpackCompilationCallback((err || err2) as RspackError, status)
+					webpackCompilationCallback((err || err2) as RspackError, stats)
 				);
 			});
 		}

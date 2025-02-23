@@ -5,9 +5,9 @@ const id = 'WatchStatePlugin';
 const version = 1;
 
 export enum messages {
-	compilationComplete = 'Webpack compilation complete.',
-	startWatching = 'Webpack compilation complete. Watching for file changes.',
-	changeDetected = 'File change detected. Starting incremental webpack compilation...',
+	compilationComplete = 'Rspack compilation complete.',
+	startWatching = 'Rspack compilation complete. Watching for file changes.',
+	changeDetected = 'File change detected. Starting incremental rspack compilation...',
 }
 
 /**

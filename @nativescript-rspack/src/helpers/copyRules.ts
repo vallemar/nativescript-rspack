@@ -1,6 +1,6 @@
 import { CopyRspackPlugin } from '@rspack/core';
 import { basename } from 'path';
-import Config from 'webpack-chain';
+import Config from 'rspack-chain';
 import { env } from '..';
 import { getEntryDirPath } from './platform';
 

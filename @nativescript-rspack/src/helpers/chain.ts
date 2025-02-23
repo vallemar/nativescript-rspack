@@ -1,4 +1,4 @@
-import { ChainedSet } from 'webpack-chain';
+import { ChainedSet } from 'rspack-chain';
 
 /**
  * Helper to insert values after a specific item in a ChainedSet.

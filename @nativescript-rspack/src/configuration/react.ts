@@ -1,5 +1,5 @@
+import Config from 'rspack-chain';
 import { merge } from 'webpack-merge';
-import Config from 'webpack-chain';
 
 import { getPlatformName } from '../helpers/platform';
 import { env as _env, IWebpackEnv } from '../index';

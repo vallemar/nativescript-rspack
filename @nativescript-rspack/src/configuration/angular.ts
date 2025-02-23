@@ -1,18 +1,18 @@
-import { extname, resolve } from 'path';
-import Config from 'webpack-chain';
-import { satisfies } from 'semver';
 import { existsSync } from 'fs';
+import { extname, resolve } from 'path';
+import Config from 'rspack-chain';
+import { satisfies } from 'semver';
 
-import { getTypescript, readTsConfig } from '../helpers/typescript';
 import { getDependencyVersion } from '../helpers/dependencies';
-import { getProjectTSConfigPath } from '../helpers/project';
-import { env as _env, IWebpackEnv } from '../index';
 import { warnOnce } from '../helpers/log';
 import {
 	getEntryDirPath,
 	getEntryPath,
 	getPlatformName,
 } from '../helpers/platform';
+import { getProjectTSConfigPath } from '../helpers/project';
+import { getTypescript, readTsConfig } from '../helpers/typescript';
+import { env as _env, IWebpackEnv } from '../index';
 import base from './base';
 
 // until we can switch to async/await on the webpack config, copy this from '@angular/compiler-cli'
@@ -161,11 +161,11 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 			}
 			if (this.pluginOptions.jitMode) {
 				transformers.before.unshift(
-					require('../transformers/NativeClass').default,
+					require('../transformers/NativeClass').default
 				);
 			} else {
 				transformers.before.push(
-					require('../transformers/NativeClass').default,
+					require('../transformers/NativeClass').default
 				);
 			}
 			args[1] = transformers;
@@ -189,7 +189,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		});
 
 		const buildAngularVersion = getDependencyVersion(
-			'@angular-devkit/build-angular',
+			'@angular-devkit/build-angular'
 		);
 
 		if (buildAngularVersion) {
@@ -212,7 +212,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 				.rule('angular-webpack-loader')
 				.test(/\.[cm]?[tj]sx?$/)
 				.exclude.add(
-					/[/\\](?:core-js|@babel|tslib|web-animations-js|web-streams-polyfill)[/\\]/,
+					/[/\\](?:core-js|@babel|tslib|web-animations-js|web-streams-polyfill)[/\\]/
 				)
 				.end()
 				.resolve.set('fullySpecified', false)
@@ -226,7 +226,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 				'build-angular-missing',
 				`
 				@angular-devkit/build-angular is missing! Some features may not work as expected. Please install it manually to get rid of this warning.
-				`,
+				`
 			);
 		}
 	}
@@ -281,7 +281,7 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 			},
 			/core\/profiling/,
 			/core\/ui\/styling/,
-		]),
+		])
 	);
 
 	config.optimization.minimizer('TerserPlugin').tap((args) => {
@@ -330,10 +330,10 @@ function tryRequireResolve(path: string) {
 function getWebpackLoaderPath() {
 	return (
 		tryRequireResolve(
-			'@angular-devkit/build-angular/src/babel/webpack-loader',
+			'@angular-devkit/build-angular/src/babel/webpack-loader'
 		) ??
 		tryRequireResolve(
-			'@angular-devkit/build-angular/src/tools/babel/webpack-loader',
+			'@angular-devkit/build-angular/src/tools/babel/webpack-loader'
 		) ??
 		// fallback to angular 16.1+
 		'@angular-devkit/build-angular/src/tools/babel/webpack-loader'

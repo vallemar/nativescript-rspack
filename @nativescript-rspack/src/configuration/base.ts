@@ -8,7 +8,6 @@ import {
 
 import { existsSync } from 'fs';
 import { satisfies } from 'semver';
-import Config from 'webpack-chain';
 
 import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';

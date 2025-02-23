@@ -1,4 +1,4 @@
-import Config from 'webpack-chain';
+import Config from 'rspack-chain';
 
 import path from 'path';
 import { chainedSetAddAfter } from '../helpers/chain';
