@@ -34,6 +34,12 @@ webpack/lib
 
 ```
 
+## Build `@nativescript/rspack`
+```
+cd @nativescript-rspack
+npm run build:watch
+```
+
 ## RUN!!!
 `ns run android`
 

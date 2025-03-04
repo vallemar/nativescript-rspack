@@ -37,14 +37,15 @@
 		"lodash.get": "^4.0.0",
 		"micromatch": "^4.0.0",
 		"node-polyfill-webpack-plugin": "^4.1.0",
-		"postcss": "^8.0.0",
+		"postcss": "^8.5.3",
 		"postcss-import": "^14.0.0",
-		"postcss-loader": "^7.0.0",
+		"postcss-loader": "^8.1.1",
 		"raw-loader": "^4.0.0",
 		"react-refresh": "~0.14.0",
 		"rspack-plugin-virtual-module": "^0.1.13",
 		"sass": "^1.0.0",
-		"sass-loader": "^13.0.0",
+		"sass-embedded": "^1.85.1",
+		"sass-loader": "^16.0.5",
 		"sax": "^1.0.0",
 		"semver": "^7.0.0 || ^6.0.0",
 		"source-map": "^0.7.0",
@@ -53,7 +54,7 @@
 		"ts-dedent": "^2.0.0",
 		"vue-loader": "^15.0.0 <= 15.9.8",
 		"webpack-bundle-analyzer": "^4.0.0",
-		"webpack-merge": "^5.0.0"
+		"webpack-merge": "^5.10.0"
 	},
 	"devDependencies": {
 		"@angular-devkit/build-angular": "^19.0.0",

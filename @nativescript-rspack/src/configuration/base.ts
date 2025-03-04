@@ -270,6 +270,10 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		config.profile(true);
 	});
 
+	// TODO: build workers
+	//	config.output.chunkLoading('import-scripts');
+	//  config.module.parser.set('javascript', { url: false });
+
 	// worker-loader should be declared before ts-loader
 	config.module
 		.rule('workers')
@@ -291,23 +295,27 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		.end()
 		.use('builtin:swc-loader')
 		.loader('builtin:swc-loader')
-		.options({
-			...configFile,
-			sourceMap: true,
-			jsc: {
-				parser: {
-					syntax: 'typescript',
-					tsx: true,
-				},
-				transform: {
-					react: {
-						runtime: 'automatic',
-						development: true,
-						refresh: true,
+		.options(
+			{
+				...configFile,
+				sourceMap: true,
+				jsc: {
+					parser: {
+						syntax: 'typescript',
+						tsx: false,
+					},
+					transform: {
+						react: {
+							runtime: 'automatic',
+							development: true,
+							refresh: true,
+						},
 					},
 				},
-			},
-		});
+				minify: mode === 'production',
+			} /* satisfies SwcLoaderOptions */
+		);
+
 	// set up ts support
 	/* config.module
 		.rule('ts')
@@ -437,7 +445,12 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		.options(postCSSOptions)
 		.end()
 		.use('sass-loader')
-		.loader('sass-loader');
+		.loader('sass-loader')
+		.options({
+			api: 'modern-compiler',
+			implementation: require.resolve('sass-embedded'),
+		})
+		.end();
 
 	// config.plugin('NormalModuleReplacementPlugin').use(NormalModuleReplacementPlugin, [
 	// 	/.*/,
