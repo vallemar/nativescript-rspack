@@ -1,0 +1,91 @@
+diff --git a/node_modules/vue-loader/dist/pluginWebpack5.js b/node_modules/vue-loader/dist/pluginWebpack5.js
+index 7c5eadf..7172716 100644
+--- a/node_modules/vue-loader/dist/pluginWebpack5.js
++++ b/node_modules/vue-loader/dist/pluginWebpack5.js
+@@ -1,14 +1,14 @@
+ "use strict";
+-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
++var __createBinding = (this && this.__createBinding) || (Object.create ? (function (o, m, k, k2) {
+     if (k2 === undefined) k2 = k;
+-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+-}) : (function(o, m, k, k2) {
++    Object.defineProperty(o, k2, { enumerable: true, get: function () { return m[k]; } });
++}) : (function (o, m, k, k2) {
+     if (k2 === undefined) k2 = k;
+     o[k2] = m[k];
+ }));
+-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
++var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function (o, v) {
+     Object.defineProperty(o, "default", { enumerable: true, value: v });
+-}) : function(o, v) {
++}) : function (o, v) {
+     o["default"] = v;
+ });
+ var __importStar = (this && this.__importStar) || function (mod) {
+@@ -26,18 +26,19 @@ const compiler_1 = require("./compiler");
+ const descriptorCache_1 = require("./descriptorCache");
+ const id = 'vue-loader-plugin';
+ const NS = 'vue-loader';
+-const NormalModule = require('webpack/lib/NormalModule');
+-const BasicEffectRulePlugin = require('webpack/lib/rules/BasicEffectRulePlugin');
+-const BasicMatcherRulePlugin = require('webpack/lib/rules/BasicMatcherRulePlugin');
+-const UseEffectRulePlugin = require('webpack/lib/rules/UseEffectRulePlugin');
+-const RuleSetCompiler = require('webpack/lib/rules/RuleSetCompiler');
++const NormalModule = require('../../../@nativescript-rspack/node_modules/@angular-devkit/build-angular/node_modules/webpack/lib/NormalModule');
++
++const BasicEffectRulePlugin = require('../../../@nativescript-rspack/node_modules/@angular-devkit/build-angular/node_modules/webpack/lib/rules/BasicEffectRulePlugin');
++const BasicMatcherRulePlugin = require('../../../@nativescript-rspack/node_modules/@angular-devkit/build-angular/node_modules/webpack/lib/rules/BasicMatcherRulePlugin');
++const UseEffectRulePlugin = require('../../../@nativescript-rspack/node_modules/@angular-devkit/build-angular/node_modules/webpack/lib/rules/UseEffectRulePlugin');
++const RuleSetCompiler = require('../../../@nativescript-rspack/node_modules/@angular-devkit/build-angular/node_modules/webpack/lib/rules/RuleSetCompiler');
+ let objectMatcherRulePlugins = [];
+ try {
+-    const ObjectMatcherRulePlugin = require('webpack/lib/rules/ObjectMatcherRulePlugin');
++    const ObjectMatcherRulePlugin = require('../../../@nativescript-rspack/node_modules/@angular-devkit/build-angular/node_modules/webpack/lib/rules/ObjectMatcherRulePlugin');
+     objectMatcherRulePlugins.push(new ObjectMatcherRulePlugin('assert', 'assertions'), new ObjectMatcherRulePlugin('descriptionData'));
+ }
+ catch (e) {
+-    const DescriptionDataMatcherRulePlugin = require('webpack/lib/rules/DescriptionDataMatcherRulePlugin');
++    const DescriptionDataMatcherRulePlugin = require('../../../@nativescript-rspack/node_modules/@angular-devkit/build-angular/node_modules/webpack/lib/rules/DescriptionDataMatcherRulePlugin');
+     objectMatcherRulePlugins.push(new DescriptionDataMatcherRulePlugin());
+ }
+ const ruleSetCompiler = new RuleSetCompiler([
+@@ -72,8 +73,8 @@ class VueLoaderPlugin {
+             normalModule
+                 .getCompilationHooks(compilation)
+                 .loader.tap(id, (loaderContext) => {
+-                loaderContext[NS] = true;
+-            });
++                    loaderContext[NS] = true;
++                });
+         });
+         const rules = compiler.options.module.rules;
+         let rawVueRule;
+@@ -147,7 +148,7 @@ class VueLoaderPlugin {
+         // (mostly babel)
+         const jsRulesForRenderFn = rules
+             .filter((r) => r !== rawVueRule &&
+-            (match(r, 'test.js').length > 0 || match(r, 'test.ts').length > 0))
++                (match(r, 'test.js').length > 0 || match(r, 'test.ts').length > 0))
+             .map((rawRule) => cloneRule(rawRule, refs, jsRuleCheck, jsRuleResource));
+         // global pitcher (responsible for injecting template compiler loader & CSS
+         // post loader)
+@@ -278,7 +279,8 @@ function cloneRule(rawRule, refs, ruleCheck, ruleResource) {
+         rawRule.use = ruleUse;
+     }
+     let currentResource;
+-    const res = Object.assign(Object.assign({}, rawRule), { resource: (resources) => {
++    const res = Object.assign(Object.assign({}, rawRule), {
++        resource: (resources) => {
+             currentResource = resources;
+             return true;
+         }, resourceQuery: (query) => {
+@@ -301,7 +303,8 @@ function cloneRule(rawRule, refs, ruleCheck, ruleResource) {
+                 }
+             }
+             return true;
+-        } });
++        }
++    });
+     delete res.test;
+     if (rawRule.rules) {
+         res.rules = rawRule.rules.map((rule) => cloneRule(rule, refs, ruleCheck, ruleResource));
