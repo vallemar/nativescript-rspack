@@ -1,6 +1,8 @@
-# Steps
+The code is in @nativescript-rspack folder
 
-# Intall dependencies
+# Steps for run in local
+
+# Install dependencies
 - `npm i`
 - `cd @nativescript-rspack`
 - `npm i`
