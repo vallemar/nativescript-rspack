@@ -1,6 +1,7 @@
 # TODO
 -  [ ] Remove @swc/helpers from user app
 -  [ ] @JavaProxy and metadata
+-  [ ] Test and Fix vue2 config
 
 # Steps for run in local
 The code is in @nativescript-rspack folder

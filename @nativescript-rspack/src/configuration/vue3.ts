@@ -8,6 +8,7 @@ import { env as _env, IWebpackEnv } from '../index';
 import base from './base';
 
 export default function (config: Config, env: IWebpackEnv = _env): Config {
+	console.log('RUN VUE CONFIG');
 	base(config, env);
 
 	const platform = getPlatformName();
@@ -30,7 +31,6 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		.tap((options) => {
 			return {
 				...options,
-				compiler: getTemplateCompiler(),
 			};
 		});
 
@@ -49,33 +49,6 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 		.after('css2json-loader')
 		.loader('vue-loader/lib/loaders/stylePostLoader.js');
 
-	// set up ts support in vue files
-	/* config.module
-		.rule('ts')
-		.use('ts-loader')
-		.loader('ts-loader')
-		.tap((options = {}) => {
-			return merge(options, {
-				appendTsSuffixTo: ['\\.vue$'],
-			});
-		}); */
-
-	/* 	config.when(hasDependency('typescript'), (config) => {
-		config.plugin('ForkTsCheckerWebpackPlugin').tap((args) => {
-			args[0] = merge(args[0], {
-				typescript: {
-					extensions: {
-						vue: {
-							enabled: true,
-							compiler: 'nativescript-vue-template-compiler',
-						},
-					},
-				},
-			});
-			return args;
-		});
-	}); */
-
 	// add VueLoaderPlugin as the first plugin
 	config
 		.plugin('VueLoaderPlugin')
@@ -85,15 +58,6 @@ export default function (config: Config, env: IWebpackEnv = _env): Config {
 
 	// add an alias for vue, since some plugins may try to import it
 	config.resolve.alias.set('vue', 'nativescript-vue');
-
-	// todo: re-visit later, disabling by default now
-	// config.plugin('DefinePlugin').tap((args) => {
-	// 	args[0] = merge(args[0], {
-	// 		__UI_USE_EXTERNAL_RENDERER__: true,
-	// 	});
-
-	// 	return args;
-	// });
 
 	return config;
 }
@@ -114,13 +78,5 @@ function patchVueLoaderForHMR() {
 		delete require.cache[vueLoaderPath];
 	} catch (err) {
 		error('Failed to patch VueLoader - HMR may not work properly!');
-	}
-}
-
-function getTemplateCompiler() {
-	try {
-		return require('nativescript-vue-template-compiler');
-	} catch (err) {
-		// ignore
 	}
 }

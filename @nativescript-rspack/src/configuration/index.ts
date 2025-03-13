@@ -6,6 +6,7 @@ import react from './react';
 import svelte from './svelte';
 import typescript from './typescript';
 import vue from './vue';
+import vue3 from './vue3';
 
 export const configs = {
 	base,
@@ -15,4 +16,5 @@ export const configs = {
 	svelte,
 	typescript,
 	vue,
+	vue3,
 };

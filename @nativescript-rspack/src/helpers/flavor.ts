@@ -1,7 +1,7 @@
+import semver from 'semver';
 import { defaultConfigs } from '../';
-import { getAllDependencies } from './dependencies';
+import { getAllDependencies, getDependencyVersion } from './dependencies';
 import { error } from './log';
-
 /**
  * Utility to determine the project flavor based on installed dependencies
  * (vue, angular, react, svelete, typescript, javascript...)
@@ -10,7 +10,7 @@ export function determineProjectFlavor(): keyof typeof defaultConfigs | false {
 	const dependencies = getAllDependencies();
 
 	if (dependencies.includes('nativescript-vue')) {
-		return 'vue';
+		return isVue3() ? 'vue3' : 'vue';
 	}
 
 	if (dependencies.includes('@nativescript/angular')) {
@@ -45,3 +45,6 @@ export function determineProjectFlavor(): keyof typeof defaultConfigs | false {
 
 	return false;
 }
+
+const isVue3 = () =>
+	semver.satisfies(getDependencyVersion('nativescript-vue'), '>=3.0.0');
