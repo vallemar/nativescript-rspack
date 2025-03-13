@@ -1,16 +1,17 @@
-# Steps
-
 # TODO
 -  [ ] Remove @swc/helpers from user app
 -  [ ] @JavaProxy and metadata
 
-# Intall dependencies
+# Steps for run in local
+The code is in @nativescript-rspack folder
+
+## Install dependencies
 - `npm i`
 - `cd @nativescript-rspack`
 - `npm i`
 
 
-# Change cli
+## Change cli
 
 update your global node_modules/nativescript `lib/services/webpack/webpack-compiler-service.js`
 ```
