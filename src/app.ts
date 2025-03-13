@@ -1,3 +1,4 @@
+import "@nativescript/core/globals";
 import { createApp } from "nativescript-vue";
 import "./app.scss";
 import Home from "./components/Home.vue";
@@ -5,12 +6,8 @@ import Home from "./components/Home.vue";
 createApp(Home).start();
 
 /* TEST WORKERS */
-console.log(import.meta.url);
-console.log(new URL(import.meta.url));
 
-//const worker = new Worker(new URL("./workerTS", import.meta.url));
-
-/* const worker1 = new Worker(new URL("./worker.js", import.meta.url));
+const worker = new Worker(new URL("./worker", import.meta.url));
 
 worker.postMessage({
   src: { dataEntryWorker: "valueDataEntryWorker" },
@@ -31,10 +28,4 @@ worker.onerror = function (err) {
     `An unhandled error occurred in worker: ${err.filename}, line: ${err.lineno} :`,
     err.message
   );
-}; */
-
-//const worker = new Worker("./worker.js");
-//const worker = new Worker("~/worker.js");
-//const worker = new Worker("@/worker.js");
-//const worker = new Worker("/worker.js");
-//const worker = new Worker("worker.js");
+};

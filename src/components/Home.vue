@@ -1,11 +1,13 @@
 <script lang="ts" setup>
+import { CreateViewEventData, Placeholder } from "@nativescript/core";
 import {
-  ref,
+  $navigateTo,
   computed,
   onMounted,
   onUnmounted,
-  $navigateTo,
+  ref,
 } from "nativescript-vue";
+import { MyButton } from "~/androidClassTest";
 import Details from "./Details.vue";
 
 const counter = ref(0);
@@ -27,6 +29,12 @@ onUnmounted(() => {
   console.log("unmounted");
   clearInterval(interval);
 });
+
+function creatingView(args: CreateViewEventData) {
+  const button = new MyButton();
+  args.view = button;
+  button.onClick();
+}
 </script>
 
 <template>
@@ -36,13 +44,8 @@ onUnmounted(() => {
         <Label text="Home" class="font-bold text-lg" />
       </ActionBar>
 
-      <GridLayout rows="*, auto, auto, *" class="px-4 bg-yellow-400">
-        <Label
-          row="1"
-          class="text-xl align-middle text-center text-blue-500"
-          :text="message"
-          @tap="logMessage"
-        />
+      <GridLayout rows="*, auto, auto, *" class="px-4 bg-blue-400">
+        <Placeholder @creatingView="creatingView" />
 
         <Button
           row="2"

@@ -1,5 +1,9 @@
 # Steps
 
+# TODO
+-  [ ] Remove @swc/helpers from user app
+-  [ ] @JavaProxy and metadata
+
 # Intall dependencies
 - `npm i`
 - `cd @nativescript-rspack`
