@@ -8,7 +8,6 @@ import { env as _env, IWebpackEnv } from '../index';
 import base from './base';
 
 export default function (config: Config, env: IWebpackEnv = _env): Config {
-	console.log('RUN VUE CONFIG');
 	base(config, env);
 
 	const platform = getPlatformName();
